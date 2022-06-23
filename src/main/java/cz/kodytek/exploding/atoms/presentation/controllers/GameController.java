@@ -104,7 +104,6 @@ public class GameController {
     }
 
     public void setPlayerModels(PlayerModels playerModels) {
-        System.out.println("Setter: " + this);
         this.playerModels = playerModels;
     }
 
@@ -141,7 +140,8 @@ public class GameController {
         if (game.getWinner() == PlayerType.None) {
             // AI Calls
             moveIfAI(playerModels.getBluePlayer());
-            moveIfAI(playerModels.getRedPlayer());
+            if (game.getWinner() == PlayerType.None)
+                moveIfAI(playerModels.getRedPlayer());
 
             if (!incorrectMove)
                 render();
@@ -156,10 +156,12 @@ public class GameController {
                     game.move(coordinate.getX(), coordinate.getY());
                 } catch (Exception e) {
                     incorrectMove = true;
+                    e.printStackTrace();
                     lPlayerOnMove.setText("Illegal move by \"" + player.getName() + "\" AI! [" + coordinate.getX() + ", " + coordinate.getY() + "]");
                 }
             } catch (Exception e) {
                 incorrectMove = true;
+                e.printStackTrace();
                 lPlayerOnMove.setText(player.getName() + " crashed! - see console");
             }
         }
